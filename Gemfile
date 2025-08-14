@@ -39,6 +39,7 @@ gem "bcrypt"
 gem "jwt"
 gem "blueprinter"
 gem "rack-attack"
+gem "pusher"
 
 group :production, :test do
   gem "pg"
