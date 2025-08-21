@@ -1,10 +1,14 @@
 class BlogsController < ApplicationController
-  before_action :authenticate_request
+  before_action :authenticate_request, except: [ :index ]
 
   def index
-    blogs = Blog.all
+    result = BlogService::Base.filter(params)
 
-    render json: BlogBlueprint.render(blogs, view: :normal, current_user: @current_user)
+    if result.success?
+      render_success(payload: BlogBlueprint.render(result.payload, view: :normal, current_user: @current_user), status: :ok)
+    else
+      render_error(errors: result.errors, status: :unprocessable_entity)
+    end
   end
 
   def show
